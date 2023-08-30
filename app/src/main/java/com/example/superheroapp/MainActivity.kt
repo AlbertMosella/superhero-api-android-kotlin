@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.superheroapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var retrofit: Retrofit
+    private lateinit var adapter: SuperheroAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,17 +40,28 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        adapter = SuperheroAdapter()
+        binding.rvSuperhero.setHasFixedSize(true)
+        binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
+        binding.rvSuperhero.adapter = adapter
     }
 
     private fun searchByName(query: String) {
+        binding.progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
             val myResponse: Response<SuperheroDataResponse> =
                 retrofit.create(ApiService::class.java).getSuperheroes(query)
             if (myResponse.isSuccessful) {
                 Log.i("superhero", ":)")
                 val response: SuperheroDataResponse? = myResponse.body()
-                if(response != null){
-                    Log.i("superhero", response.toString())
+                if (response != null) {
+                    Log.i("superhero response", response.toString())
+                    runOnUiThread {
+                        adapter.updateList(response.superheros)
+                        binding.progressBar.isVisible = false
+                    }
+
                 }
 
             } else {
