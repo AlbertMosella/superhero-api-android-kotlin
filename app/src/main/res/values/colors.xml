@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="superhero_item_name">#8D6937C6</color>
+    <color name="superhero_stat_intelligence">#8D40FF49</color>
+    <color name="superhero_stat_strength">#FFEB3B</color>
+    <color name="superhero_stat_speed">#8D3A5BFF</color>
+    <color name="superhero_stat_durability">#FF5722</color>
+    <color name="superhero_stat_power">#8DFF0000</color>
+    <color name="superhero_stat_combat">#8D844BEF</color>
 </resources>

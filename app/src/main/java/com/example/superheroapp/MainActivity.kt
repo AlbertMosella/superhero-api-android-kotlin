@@ -1,5 +1,6 @@
 package com.example.superheroapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        adapter = SuperheroAdapter()
+        adapter = SuperheroAdapter{superheroId -> navigateToDetail(superheroId)}
         binding.rvSuperhero.setHasFixedSize(true)
         binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
         binding.rvSuperhero.adapter = adapter
@@ -77,5 +78,11 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+    }
+
+    private fun navigateToDetail(id:String){
+        val intent = Intent(this, DetailSuperHeroActivity::class.java)
+        intent.putExtra(DetailSuperHeroActivity.EXTRA_ID, id)
+        startActivity(intent)
     }
 }
